@@ -3,79 +3,94 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsirirak <tsirirak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsirirak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/08 15:01:12 by tsirirak          #+#    #+#             */
-/*   Updated: 2022/05/08 23:42:38 by tsirirak         ###   ########.fr       */
+/*   Created: 2022/06/04 01:42:28 by tsirirak          #+#    #+#             */
+/*   Updated: 2022/06/04 02:17:43 by tsirirak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
-#include <stdio.h>
 #include <unistd.h>
+#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
-int ft_printf(const char *fmt, ...)
+size_t  ft_strlen(const char *s)
 {
-    va_list va_list_ap;
-    int     len;
-    int     fmt_len;
-    char    *string_recieved;
-    char    *malloc_string;
+        int     i;
 
-    len = 0;
-    fmt_len = 0;
-    if (fmt == NULL)
-        return (0);
-    va_start(va_list_ap, fmt);
-    while (*fmt)
-    {
-        if (*fmt != '%')
+        i = 0;
+        while (s[i] != '\0')
+                i++;
+        return (i);
+}
+
+void    ft_putstr(char *s)
+{
+        write(1, s, ft_strlen(s));
+}
+
+void    ft_putnbr(int n)
+{
+        long    i;
+        char    iii;
+
+        i = (long)n;
+        if (i < 0)
         {
-            // fd = file descriptor
-            // 0 = stdin => for read
-            // 1 = stdout (normal)
-            // 2 = stderr (error)
-            // etc. = opened file
-            write(1, fmt, 1);
-            len++;
+                write(1, "-", 1);
+                i *= -1;
         }
-        else //*fmt == '%'
+        if (i >= 10)
         {
-            if (*(fmt+1) == '%')
-            {
-                write(1, "%", 1);
-                len++;
-            }
-            if (*(fmt+1) == 's')
-            {
-                string_recieved = va_arg(va_list_ap, char *);
-                fmt_len = strlen(string_recieved);
-                // malloc_string = (char *)malloc(sizeof(char) * (fmt_len + 1));
-                // malloc_string = strncpy(malloc_string, string_recieved, fmt_len);
-                // malloc_string[fmt_len] = '\0';
-                write(1, string_recieved, fmt_len);
-                len += fmt_len;
-                fmt++;
-            }
+                ft_putnbr(i / 10);
         }
-        fmt++;
-    }
-    va_end(va_list_ap);
-    return (len);
+        iii = (i % 10) + '0';
+        write(1, &iii, 1);
 }
 
-int main(void)
+void    ft_putchar(char c)
 {
-    ft_printf("Hello %% World %% |%s|\n", "This is from %s");
-    // printf("+42 = %+5d", 42);
+        write(1, &c, 1);
 }
 
-// %[flags => "-+ #0"][width][.precision]specifier
-/*
+int	ft_printf(const char *fmt,...)
 {
-    - is_left
-    + is_signed
+	va_list	args;
+	va_start(args, fmt);
+	while (*fmt)
+	{
+		if (*fmt == '%')
+		{
+			if (*(fmt + 1) == 'c')
+			{
+				ft_putchar(va_arg(args, char));
+				fmt++;
+			}
+			else if (*(fmt + 1) == 's')
+			{
+				ft_putstr(va_arg(args, char *));
+				fmt++;
+			}
+		}
+		else
+		{
+			ft_putchar(*fmt);
+		}
+		fmt++;
+	}
+	return (0);
 }
-*/
+
+int	main()
+{
+	ft_printf("Hello%s\n","OPAL");
+	return (0);
+}
+
+
+
+
+
+
+	
