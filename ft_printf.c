@@ -6,7 +6,7 @@
 /*   By: tsirirak <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/04 01:42:28 by tsirirak          #+#    #+#             */
-/*   Updated: 2022/06/04 02:17:43 by tsirirak         ###   ########.fr       */
+/*   Updated: 2022/06/05 14:45:55 by tsirirak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,23 @@ void    ft_putnbr(int n)
         write(1, &iii, 1);
 }
 
+void    ft_putnbr_2(unsigned int n)
+{
+        long    i;
+        char    iii;
+
+        i = (long)n;
+        if (i < 0)
+		i *= -1;
+       	if (i >= 10)
+        {
+                ft_putnbr(i / 10);
+        }
+        iii = (i % 10) + '0';
+        write(1, &iii, 1);
+}
+
+
 void    ft_putchar(char c)
 {
         write(1, &c, 1);
@@ -72,6 +89,17 @@ int	ft_printf(const char *fmt,...)
 				ft_putstr(va_arg(args, char *));
 				fmt++;
 			}
+			else if (*(fmt + 1) == 'd' || *(fmt +1) == 'i')
+			{
+				ft_putnbr(va_arg(args, int));
+				fmt++;
+			}
+			else if (*(fmt + 1) == 'u')
+			{
+				ft_putnbr_2(va_arg(args, unsigned int));
+				fmt++;
+			}
+
 		}
 		else
 		{
@@ -84,7 +112,8 @@ int	ft_printf(const char *fmt,...)
 
 int	main()
 {
-	ft_printf("Hello%s\n","OPAL");
+	printf("printf unsigned int 65536, -1 = %u, %u/n", 65536, -1);
+	ft_printf("Hello%u\n",65536);
 	return (0);
 }
 
