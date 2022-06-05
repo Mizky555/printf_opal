@@ -51,12 +51,10 @@ void    ft_putnbr(int n)
 
 void    ft_putnbr_2(unsigned int n)
 {
-        long    i;
+        unsigned int    i;
         char    iii;
 
-        i = (long)n;
-        if (i < 0)
-		i *= -1;
+        i = n;
        	if (i >= 10)
         {
                 ft_putnbr(i / 10);
@@ -69,6 +67,21 @@ void    ft_putnbr_2(unsigned int n)
 void    ft_putchar(char c)
 {
         write(1, &c, 1);
+}
+
+void    ft_putnbr_16(unsigned int n)
+{
+        unsigned int    i;
+        char    iii;
+
+        i = 123;
+       	if (i >= 10)
+        {
+			123/10 = 12 /10 = 1
+            ft_putnbr(i / 10);
+        }
+        iii = (i % 10) + '0';
+        write(1, &iii, 1);
 }
 
 int	ft_printf(const char *fmt,...)
@@ -112,8 +125,8 @@ int	ft_printf(const char *fmt,...)
 
 int	main()
 {
-	printf("printf unsigned int 65536, -1 = %u, %u/n", 65536, -1);
-	ft_printf("Hello%u\n",65536);
+	printf("printf 65536, -1 = %u, %u\n", 65536, -1);
+	ft_printf("ft_printf 65536, -1 = %u, %u\n",65536, -1);
 	return (0);
 }
 
