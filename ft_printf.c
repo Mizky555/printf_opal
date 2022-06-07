@@ -74,13 +74,19 @@ void    ft_putnbr_16(unsigned int n)
         unsigned int    i;
         char    iii;
 
-        i = 123;
-       	if (i >= 10)
+		i = n;
+       	if (i > 15)
         {
-			123/10 = 12 /10 = 1
-            ft_putnbr(i / 10);
+			ft_putnbr_16(i / 16);
         }
-        iii = (i % 10) + '0';
+		if ((i % 16 >= 10) && (i % 16 <= 15))
+		{
+			iii = (i % 16) + '7';
+		}
+		else if ((i % 16 >= 0) && (i % 16 <= 9))
+		{
+			iii = (i % 16) + '0';
+		}
         write(1, &iii, 1);
 }
 
@@ -112,6 +118,11 @@ int	ft_printf(const char *fmt,...)
 				ft_putnbr_2(va_arg(args, unsigned int));
 				fmt++;
 			}
+			else if (*(fmt + 1) == 'X')
+			{
+				ft_putnbr_16(va_arg(args, unsigned int));
+				fmt++;
+			}
 
 		}
 		else
@@ -125,8 +136,8 @@ int	ft_printf(const char *fmt,...)
 
 int	main()
 {
-	printf("printf 65536, -1 = %u, %u\n", 65536, -1);
-	ft_printf("ft_printf 65536, -1 = %u, %u\n",65536, -1);
+	printf("printf 123, 50000 = %X, %X\n", 123, 50000);
+	ft_printf("ft_printf 123, 50000 = %X, %X\n",123, 50000);
 	return (0);
 }
 
