@@ -15,135 +15,66 @@
 #include <stdio.h>
 #include <string.h>
 
-size_t  ft_strlen(const char *s)
-{
-        int     i;
-
-        i = 0;
-        while (s[i] != '\0')
-                i++;
-        return (i);
-}
-
-void    ft_putstr(char *s)
-{
-        write(1, s, ft_strlen(s));
-}
-
-void    ft_putnbr(int n)
-{
-        long    i;
-        char    iii;
-
-        i = (long)n;
-        if (i < 0)
-        {
-                write(1, "-", 1);
-                i *= -1;
-        }
-        if (i >= 10)
-        {
-                ft_putnbr(i / 10);
-        }
-        iii = (i % 10) + '0';
-        write(1, &iii, 1);
-}
-
-void    ft_putnbr_2(unsigned int n)
-{
-        unsigned int    i;
-        char    iii;
-
-        i = n;
-       	if (i >= 10)
-        {
-                ft_putnbr(i / 10);
-        }
-        iii = (i % 10) + '0';
-        write(1, &iii, 1);
-}
-
-
-void    ft_putchar(char c)
-{
-        write(1, &c, 1);
-}
-
-void    ft_putnbr_16(unsigned int n)
-{
-        unsigned int    i;
-        char    iii;
-
-		i = n;
-       	if (i > 15)
-        {
-			ft_putnbr_16(i / 16);
-        }
-		if ((i % 16 >= 10) && (i % 16 <= 15))
-		{
-			iii = (i % 16) + '7';
-		}
-		else if ((i % 16 >= 0) && (i % 16 <= 9))
-		{
-			iii = (i % 16) + '0';
-		}
-        write(1, &iii, 1);
-}
 
 int	ft_printf(const char *fmt,...)
 {
 	va_list	args;
 	va_start(args, fmt);
+	int	len;
+
+	len = 0;
 	while (*fmt)
 	{
 		if (*fmt == '%')
 		{
 			if (*(fmt + 1) == 'c')
 			{
-				ft_putchar(va_arg(args, char));
+				len += ft_putchar(va_arg(args, int));
 				fmt++;
 			}
 			else if (*(fmt + 1) == 's')
 			{
-				ft_putstr(va_arg(args, char *));
+				len += ft_putstr(va_arg(args, char *));
 				fmt++;
 			}
 			else if (*(fmt + 1) == 'd' || *(fmt +1) == 'i')
 			{
-				ft_putnbr(va_arg(args, int));
+				len += ft_putnbr(va_arg(args, int));
 				fmt++;
 			}
 			else if (*(fmt + 1) == 'u')
 			{
-				ft_putnbr_2(va_arg(args, unsigned int));
+				len += ft_putnbr_un(va_arg(args, unsigned int));
 				fmt++;
 			}
 			else if (*(fmt + 1) == 'X')
 			{
-				ft_putnbr_16(va_arg(args, unsigned int));
+				len += ft_putnbr_16(va_arg(args, unsigned int));
+				fmt++;
+			}
+			else if (*(fmt + 1) == 'x')
+			{
+				len += ft_putnbr_16mini(va_arg(args, unsigned int));
+				fmt++;
+			}
+			else if (*(fmt + 1) == 'p')
+			{
+				len += write(1 ,"0x", 2);
+				ft_putnbr_p(va_arg(args, unsigned long));
+				fmt++;
+			}
+			else if (*(fmt + 1) == '%')
+			{
+				len += write(1, "%", 1);
 				fmt++;
 			}
 
 		}
 		else
 		{
-			ft_putchar(*fmt);
+			len += ft_putchar(*fmt);
 		}
 		fmt++;
 	}
-	return (0);
+	return (len);
 }
-
-int	main()
-{
-	printf("printf 123, 50000 = %X, %X\n", 123, 50000);
-	ft_printf("ft_printf 123, 50000 = %X, %X\n",123, 50000);
-	return (0);
-}
-
-
-
-
-
-
-	
